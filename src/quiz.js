@@ -2,17 +2,23 @@ import React, { useState } from "react";
 import quiz from "./data/quiz-questions.js";
 
 const Quiz = () => {
-  const [activeQuestion, setActiveQuestion] = useState(0);
-  const [selectedAnswer, setSelectedAnswer] = useState("0");
-  const { questions } = quiz;
+  // 3 States
+  // 1. activeQuestions to keep track of the current question
+  // 2. selectedAnswer, which answer user has selected
+  // 3. result, to calculate total scores, correctAnswers, wrongAnswers
+  const [activeQuestion, setActiveQuestion] = useState(0); // initialized to zero
+  const [selectedAnswer, setSelectedAnswer] = useState(""); // initialized to ""
+  const { questions } = quiz; // import Quiz data from quiz-questions
   const { question, choices } = questions[activeQuestion]; // destructuring
 
+  // Result state
   const [result, setResult] = useState({
     score: 0,
     correctAnswers: 0,
     wrongAnswers: 0,
   });
 
+  // increment active question
   const onClickNext = () => {
     setActiveQuestion((prev) => prev + 1);
   };
@@ -26,6 +32,7 @@ const Quiz = () => {
           <li>{item}</li>
         ))}
       </ul>
+      <button onClick={onClickNext}>Next</button>
     </div>
   );
 };
