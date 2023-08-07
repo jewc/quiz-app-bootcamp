@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import quiz from "../data/quiz-questions.js";
+import quiz from "./data/quiz-questions.js";
 
 const Quiz = () => {
   const [activeQuestion, setActiveQuestion] = useState(0);
