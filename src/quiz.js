@@ -1,3 +1,5 @@
+import React from "react";
+
 const Quiz = () => {
   const [activeQuestion, setActiveQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState("0");
