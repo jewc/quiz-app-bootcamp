@@ -15,6 +15,7 @@ const Quiz = () => {
   // State to highlight the selected answer
   const [selectedAnswerIndex, setSelectedAnswerIndex] = useState(null);
   const [showResult, setShowResult] = useState(false);
+  const [showQuiz, setShowQuiz] = useState(false);
 
   // Result state
   const [result, setResult] = useState({
@@ -39,14 +40,29 @@ const Quiz = () => {
       selectedAnswer
         ? {
             ...prev,
-            score: prev.score + 5,
-            correctAnswer: prev.correctAnswers + 1,
+            score: prev.score + 1,
+            correctAnswers: prev.correctAnswers + 1,
           }
         : {
             ...prev,
             wrongAnswers: prev.wrongAnswers + 1,
           }
     );
+  };
+
+  const onClickRestart = () => {
+    // set ShowResult to false
+    setShowResult(false);
+    // Update Result state
+    setResult({
+      score: 0,
+      correctAnswers: 0,
+      wrongAnswers: 0,
+    });
+  };
+
+  const onClickStart = () => {
+    setShowQuiz(true);
   };
 
   // Logic for Selected Answer
@@ -65,55 +81,70 @@ const Quiz = () => {
 
   return (
     <div className="quiz-container">
-      {!showResult ? (
-        <div>
+      {showQuiz ? (
+        !showResult ? (
           <div>
-            <span className="active-question-no">
-              {addLeadingZero(activeQuestion + 1)}
-            </span>
-            <span className="total-question">
-              /{addLeadingZero(questions.length)}
-            </span>
-          </div>
-          <h1>Quiz</h1>
-          <h2>{question}</h2>
-          <ul>
-            {choices.map((answer, index) => (
-              <li
-                onClick={() => onAnswerSelected(answer, index)}
-                key={answer}
-                className={
-                  selectedAnswerIndex === index ? "selectedAnswer" : null
-                }
+            <div>
+              <span className="active-question-no">
+                {addLeadingZero(activeQuestion + 1)}
+              </span>
+              <span className="total-question">
+                /{addLeadingZero(questions.length)}
+              </span>
+            </div>
+            <h1>Quiz</h1>
+            <h2>{question}</h2>
+            <ul>
+              {choices.map((answer, index) => (
+                <li
+                  onClick={() => onAnswerSelected(answer, index)}
+                  key={answer}
+                  className={
+                    selectedAnswerIndex === index ? "selected-answer" : null
+                  }
+                >
+                  {answer}
+                </li>
+              ))}
+            </ul>
+            <div className="flex-right">
+              <button
+                onClick={onClickNext}
+                disabled={selectedAnswerIndex === null}
               >
-                {answer}
-              </li>
-            ))}
-          </ul>
-          <div className="flex-right">
-            <button
-              onClick={onClickNext}
-              disabled={selectedAnswerIndex === null}
-            >
-              {activeQuestion === questions.length - 1 ? "Finish" : "Next"}
-            </button>
+                {activeQuestion === questions.length - 1 ? "Finish" : "Next"}
+              </button>
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="result">
+            <h3>Result</h3>
+            <p>
+              Total Questions: <span>{questions.length}</span>
+            </p>
+            <p>
+              Total Score: <span>{result.score}</span>
+            </p>
+            <p>
+              Correct Answers: <span>{result.correctAnswers}</span>
+            </p>
+            <p>
+              Wrong Answers: <span>{result.wrongAnswers}</span>
+            </p>
+            <div>
+              <button onClick={onClickRestart}>Restart</button>
+            </div>
+          </div>
+        )
       ) : (
         <div className="result">
-          <h3>Result</h3>
           <p>
-            Total Questions: <span>{questions.length}</span>
+            Welcome to Bo's Javascript Quiz. There are{" "}
+            <span>{questions.length}</span> Questions
           </p>
-          <p>
-            Total Score: <span>{result.score}</span>
-          </p>
-          <p>
-            Correct Answers: <span>{result.correctAnswers}</span>
-          </p>
-          <p>
-            Wrong Answers: <span>{result.wrongAnswers}</span>
-          </p>
+          <div>
+            <button onClick={onClickStart}>Let's Play!</button>
+          </div>
         </div>
       )}
     </div>
