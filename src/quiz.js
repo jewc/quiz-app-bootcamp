@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import quiz from "./data/quiz-questions.js";
+import React, { useState, useEffect } from "react";
+import quiz from "./data/js-quiz-questions.js";
 import "./quiz.css";
 
 const Quiz = () => {
@@ -9,13 +9,39 @@ const Quiz = () => {
   // 3. result, to calculate total scores, correctAnswers, wrongAnswers
   const [activeQuestion, setActiveQuestion] = useState(0); // initialized to zero
   const [selectedAnswer, setSelectedAnswer] = useState(""); // initialized to ""
-  const { questions } = quiz; // import Quiz data from quiz-questions
-  const { question, choices, correctAnswer } = questions[activeQuestion]; // destructuring
+
   const addLeadingZero = (number) => (number > 9 ? number : `0${number}`);
   // State to highlight the selected answer
   const [selectedAnswerIndex, setSelectedAnswerIndex] = useState(null);
   const [showResult, setShowResult] = useState(false);
   const [showQuiz, setShowQuiz] = useState(false);
+
+  const [isJS, setIsJS] = useState(true);
+  const [myQuestions, setQuestions] = useState({});
+
+  // Dynamic import
+  const importJSQuestions = async () => {
+    if (isJS) {
+      const myQuiz = await import("./data/js-quiz-questions.js");
+      setQuestions(myQuiz.default);
+    } else {
+      const myQuiz = await import("./data/react-quiz-questions.js");
+      setQuestions(myQuiz.default);
+    }
+  };
+
+  useEffect(() => {
+    importJSQuestions();
+  }, []);
+
+  const { questions } = quiz; // import Quiz data from quiz-questions
+
+  // Toggle
+  const { question, choices, correctAnswer } = questions[activeQuestion]; // destructuring
+
+  const toggleQuestions = () => {
+    setIsJS((prevIsJS) => !prevIsJS);
+  };
 
   // Result state
   const [result, setResult] = useState({
@@ -139,9 +165,15 @@ const Quiz = () => {
       ) : (
         <div className="result">
           <p>
-            Welcome to Bo's Javascript Quiz. There are{" "}
+            Welcome to Bo's {isJS ? "JS" : "Reacts"} Quiz. There are{" "}
             <span>{questions.length}</span> Questions
           </p>
+          <div>
+            <button onClick={toggleQuestions}>
+              {" "}
+              Swith to {isJS ? "React" : "JS"} questions
+            </button>
+          </div>
           <div>
             <button onClick={onClickStart}>Let's Play!</button>
           </div>
