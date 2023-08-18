@@ -16,8 +16,8 @@ const Quiz = () => {
   const [showResult, setShowResult] = useState(false);
   const [showQuiz, setShowQuiz] = useState(false);
 
-  const [isJS, setIsJS] = useState(true);
-  const [myQuestions, setQuestions] = useState({});
+  const [isJS, setIsJS] = useState(false);
+  const [myQuestions, setQuestions] = useState([]);
 
   // Dynamic import
   const importJSQuestions = async () => {
@@ -36,8 +36,12 @@ const Quiz = () => {
 
   const { questions } = quiz; // import Quiz data from quiz-questions
 
+  console.log("myQ", myQuestions.questions); // Add this line
+
+  console.log("Q", questions); // Add this line
   // Toggle
   const { question, choices, correctAnswer } = questions[activeQuestion]; // destructuring
+  //const { question, choices, correctAnswer } = myQuestions.question[activeQuestion]; // destructuring
 
   const toggleQuestions = () => {
     setIsJS((prevIsJS) => !prevIsJS);
