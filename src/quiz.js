@@ -21,12 +21,16 @@ const Quiz = () => {
 
   // Dynamic import
   const importJSQuestions = async () => {
-    if (isJS) {
-      const myQuiz = await import("./data/js-quiz-questions.js");
-      setQuestions(myQuiz.default);
-    } else {
-      const myQuiz = await import("./data/react-quiz-questions.js");
-      setQuestions(myQuiz.default);
+    try {
+      if (isJS) {
+        const myQuiz = await import("./data/js-quiz-questions.js");
+        setQuestions(myQuiz.default);
+      } else {
+        const myQuiz = await import("./data/react-quiz-questions.js");
+        setQuestions(myQuiz.default);
+      }
+    } catch (error) {
+      console.log("Error loading questions");
     }
   };
 
@@ -38,9 +42,11 @@ const Quiz = () => {
 
   // Toggle
   const { question, choices, correctAnswer } = questions[activeQuestion]; // destructuring
-  //const { question, choices, correctAnswer } = myQuestions[activeQuestion]; // destructuring
+  //const { question, choices, correctAnswer } = myQuestions.questions[activeQuestion]; // destructuring
 
-  console.log("myQ", myQuestions.questions); // Add this line
+  //const firstQuestion = myQuestions.questions[0];
+  //console.log("firstQuestion", firstQuestion);
+  console.log("myQuestions", myQuestions.questions); // Add this line
   console.log("Q", questions); // Add this line
 
   const toggleQuestions = () => {
