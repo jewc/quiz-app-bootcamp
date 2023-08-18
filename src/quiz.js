@@ -36,12 +36,12 @@ const Quiz = () => {
 
   const { questions } = quiz; // import Quiz data from quiz-questions
 
-  console.log("myQ", myQuestions.questions); // Add this line
-
-  console.log("Q", questions); // Add this line
   // Toggle
   const { question, choices, correctAnswer } = questions[activeQuestion]; // destructuring
-  //const { question, choices, correctAnswer } = myQuestions.question[activeQuestion]; // destructuring
+  //const { question, choices, correctAnswer } = myQuestions[activeQuestion]; // destructuring
+
+  console.log("myQ", myQuestions.questions); // Add this line
+  console.log("Q", questions); // Add this line
 
   const toggleQuestions = () => {
     setIsJS((prevIsJS) => !prevIsJS);
@@ -169,7 +169,7 @@ const Quiz = () => {
       ) : (
         <div className="result">
           <p>
-            Welcome to Bo's {isJS ? "JS" : "Reacts"} Quiz. There are{" "}
+            Welcome to James' {isJS ? "JS" : "Reacts"} Quiz. There are{" "}
             <span>{questions.length}</span> Questions
           </p>
           <div>
